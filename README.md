@@ -7,8 +7,9 @@ we connected 2 buttons
 1 button for manual alerting  
 1 button emulating fall detector  
 we generated a random Heartbeat and a random temperature  
+  
 all alarms are sent to a PHP module to be put in a database  
 and showing the generated alarms on the lcd screen  
 and the serial number of the pi is shown on screen  
 
-the github for website where the data is stored and displayed is [here](https://github.com/ErwinOudG/CareWatch)  
+there is a [github](https://github.com/ErwinOudG/CareWatch) for the website where the data is stored and displayed  
