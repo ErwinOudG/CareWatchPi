@@ -11,4 +11,4 @@ all alarms are sent to a PHP module to be put in a database
 and showing the generated alarms on the lcd screen  
 and the serial number of the pi is shown on screen  
 
-the github for website where the data is stored and displayed [here](https://github.com/ErwinOudG/CareWatch)
+the github for website where the data is stored and displayed is [here](https://github.com/ErwinOudG/CareWatch)  
