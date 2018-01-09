@@ -17,7 +17,7 @@ while True:
         sleep(0.5)
         try:
             # print("Wait")
-            url='https://carew.oudgenoeg.nl/php/request.php'
+            url='https://carew.oudgenoeg.nl/php/postback.php'
             data = {'id': 3, 'datatype': 'button', 'datavalue': 1}
             r = requests.Request(url,data=data)
             respo = urllib2.urlopen(r)

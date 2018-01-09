@@ -1,4 +1,3 @@
-# temp.py
 #!/usr/bin/python
 #--------------------------------------
 #    ___  ___  _ ____
@@ -32,15 +31,12 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 #--------------------------------------
-import urllib2
-import random
-import requests
 import smbus
 import time
 
 # Define some device parameters
 I2C_ADDR  = 0x27 # I2C device address
-LCD_WIDTH = 20   # Maximum characters per line
+LCD_WIDTH = 16   # Maximum characters per line
 
 # Define some device constants
 LCD_CHR = 1 # Mode - Sending data
@@ -51,8 +47,8 @@ LCD_LINE_2 = 0xC0 # LCD RAM address for the 2nd line
 LCD_LINE_3 = 0x94 # LCD RAM address for the 3rd line
 LCD_LINE_4 = 0xD4 # LCD RAM address for the 4th line
 
-LCD_BACKLIGHT  = 0x08  # On
-#LCD_BACKLIGHT = 0x00  # Off
+# LCD_BACKLIGHT  = 0x08  # On
+LCD_BACKLIGHT = 0x00  # Off
 
 ENABLE = 0b00000100 # Enable bit
 
@@ -73,20 +69,6 @@ def lcd_init():
   lcd_byte(0x28,LCD_CMD) # 101000 Data length, number of lines, font size
   lcd_byte(0x01,LCD_CMD) # 000001 Clear display
   time.sleep(E_DELAY)
-
-def getserial():
-  # Extract serial from cpuinfo file
-  cpuserial = "0000000000000000"
-  try:
-    f = open('/proc/cpuinfo','r')
-    for line in f:
-      if line[0:6]=='Serial':
-        cpuserial = line[10:26]
-    f.close()
-  except:
-    cpuserial = "ERROR000000000"
-
-  return cpuserial
 
 def lcd_byte(bits, mode):
   # Send byte to data pins
@@ -128,22 +110,8 @@ def main():
 
   # Initialise display
   lcd_init()
-  lcd_string(getserial() ,LCD_LINE_4)
 
-  while True:
-    rndtemp = round((random.uniform(240, 340) / 10),1)
-    temptext = "Temperature = " + str(rndtemp)
-    try:
-        # print("Wait")
-        url='https://carew.oudgenoeg.nl/php/post.php'
-        data = {'id': 3, 'datatype': 'temperature', 'datavalue': rndtemp}
-        r = requests.post(url,data=data)
-        r.close()
-        lcd_string(temptext ,LCD_LINE_3)
-    except Exceptions as e:
-        print(e)
-        print("No data found")
-    time.sleep(60)
+
 if __name__ == '__main__':
 
   try:

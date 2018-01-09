@@ -1,39 +1,7 @@
-# temp.py
-#!/usr/bin/python
-#--------------------------------------
-#    ___  ___  _ ____
-#   / _ \/ _ \(_) __/__  __ __
-#  / , _/ ___/ /\ \/ _ \/ // /
-# /_/|_/_/  /_/___/ .__/\_, /
-#                /_/   /___/
-#
-#  lcd_i2c.py
-#  LCD test script using I2C backpack.
-#  Supports 16x2 and 20x4 screens.
-#
-# Author : Matt Hawkins
-# Date   : 20/09/2015
-#
-# http://www.raspberrypi-spy.co.uk/
-#
-# Copyright 2015 Matt Hawkins
-#
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-#--------------------------------------
+# heartb.py
 import urllib2
 import random
+from time import sleep
 import requests
 import smbus
 import time
@@ -74,20 +42,6 @@ def lcd_init():
   lcd_byte(0x01,LCD_CMD) # 000001 Clear display
   time.sleep(E_DELAY)
 
-def getserial():
-  # Extract serial from cpuinfo file
-  cpuserial = "0000000000000000"
-  try:
-    f = open('/proc/cpuinfo','r')
-    for line in f:
-      if line[0:6]=='Serial':
-        cpuserial = line[10:26]
-    f.close()
-  except:
-    cpuserial = "ERROR000000000"
-
-  return cpuserial
-
 def lcd_byte(bits, mode):
   # Send byte to data pins
   # bits = the data
@@ -122,33 +76,30 @@ def lcd_string(message,line):
 
   for i in range(LCD_WIDTH):
     lcd_byte(ord(message[i]),LCD_CHR)
-
 def main():
   # Main program block
 
   # Initialise display
   lcd_init()
-  lcd_string(getserial() ,LCD_LINE_4)
 
   while True:
-    rndtemp = round((random.uniform(240, 340) / 10),1)
-    temptext = "Temperature = " + str(rndtemp)
+    sleep(300)
+    rndbeat = random.randint(55, 90)
+    print(rndbeat)
     try:
         # print("Wait")
         url='https://carew.oudgenoeg.nl/php/post.php'
-        data = {'id': 3, 'datatype': 'temperature', 'datavalue': rndtemp}
+        data = {'id': 3, 'datatype': 'heartbeat', 'datavalue': rndbeat}
         r = requests.post(url,data=data)
         r.close()
-        lcd_string(temptext ,LCD_LINE_3)
+        lcd_string("Heartbeat = " + str(rndbeat) ,LCD_LINE_2)
     except Exceptions as e:
         print(e)
         print("No data found")
-    time.sleep(60)
 if __name__ == '__main__':
-
-  try:
-    main()
-  except KeyboardInterrupt:
-    pass
-  finally:
-    lcd_byte(0x01, LCD_CMD)
+    try:
+        main()
+    except KeyboardInterrupt:
+        pass
+    finally:
+        lcd_byte(0x01, LCD_CMD)
