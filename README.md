@@ -1,6 +1,6 @@
 # [CareWatch](http://www.thecarewatch.com/) project
 ## python code for raspberry pi 
-the carewatch company wants to display their product on the CES
+the carewatch company wants to display their product on the CES  
 with a team (for CodeGorilla) we emulated a CareWatch  
 we connected it to a i2c lcd screen  
 we connected 2 buttons  
